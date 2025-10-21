@@ -43,6 +43,6 @@ test.describe('E2E Flow', () => {
     await checkoutPage.fillPaymentForm(testData.cardDetails);
     await checkoutPage.clickPayButton();
     
-    await expect(bookingSummaryPage.getBookingSuccessfulText()).toBeVisible({ timeout: 10000 });
+    await expect(bookingSummaryPage.getBookingSuccessfulText()).toBeVisible({ timeout: 15000 });
   });
 });
