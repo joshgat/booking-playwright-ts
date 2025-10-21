@@ -1,23 +1,43 @@
 {
   "name": "booking-playwright-ts",
   "version": "1.0.0",
-  "description": "Online Booking System test automation framework made with Playwright Typescri[t",
+  "description": "Online Booking System test automation framework made with Playwright TypeScript",
   "main": "index.js",
-  "scripts": {},
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/joshgat/booking-playwright-ts.git"
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "test:ui": "playwright test --ui",
+    "test:mobile": "playwright test --grep @mobile",
+    "test:desktop": "playwright test --grep @desktop",
+    "test:chrome": "playwright test --project=chromium",
+    "test:firefox": "playwright test --project=firefox",
+    "test:safari": "playwright test --project=webkit",
+    "test:all": "playwright test --project=chromium --project=firefox --project=webkit",
+    "test:report": "playwright show-report",
+    "test:codegen": "playwright codegen https://alphaibe12.rmscloud.com/22749/1",
+    "install:browsers": "playwright install",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix"
   },
-  "keywords": [],
+  "keywords": [
+    "playwright",
+    "typescript",
+    "test-automation",
+    "booking-system",
+    "e2e-testing"
+  ],
   "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/joshgat/booking-playwright-ts/issues"
-  },
-  "homepage": "https://github.com/joshgat/booking-playwright-ts#readme",
+  "license": "MIT",
   "devDependencies": {
-    "@playwright/test": "^1.56.1",
-    "@types/node": "^24.9.1"
+    "@playwright/test": "^1.40.0",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
