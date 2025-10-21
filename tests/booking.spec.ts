@@ -4,7 +4,7 @@ import { test, expect } from '../src/fixtures/testFixtures';
  * Booking System Test Suite
  * Tests the complete end-to-end booking flow from search to confirmation
  */
-test.describe('Booking System - Basic Flow', () => {
+test.describe('E2E Flow', () => {
   
   test.beforeEach(async ({ homePage }) => {
     await homePage.navigateToHomePage();
