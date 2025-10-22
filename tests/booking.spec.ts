@@ -17,7 +17,7 @@ test.describe('E2E Flow', () => {
    * @param bookingSummaryPage - Booking summary page for confirmation verification
    * @param testData - Test data containing guest and payment information
    */
-  test('should navigate to home page and select booking dates @desktop', async ({ homePage, checkoutPage, bookingSummaryPage, testData }) => {
+  test('should navigate to home page and select booking dates @desktop @chrome', async ({ homePage, checkoutPage, bookingSummaryPage, testData }) => {
     await expect(homePage.calendarIcon).toBeVisible();
     await homePage.clickCalendarIcon();
     await homePage.performBookingSearch();

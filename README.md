@@ -6,10 +6,10 @@ A comprehensive test automation framework for the booking system built with Play
 
 - **Page Object Model (POM)** - Clean, maintainable test structure
 - **TypeScript Support** - Full type safety and IntelliSense
-- **Multi-Device Testing** - Desktop, tablet, and mobile browser support
+- **Multi-Device Testing** - Desktop and mobile browser support
 - **Custom Fixtures** - Reusable test fixtures for better organization
 - **CI/CD Ready** - GitHub Actions workflow for automated testing
-- **Cross-Browser Testing** - Chrome, Firefox, Safari support
+- **Mobile-Specific Testing** - Dedicated mobile test flows with touch interactions
 - **Test Data Management** - Centralized test data utilities
 - **Screenshot & Video Capture** - Automatic failure documentation
 
@@ -18,18 +18,21 @@ A comprehensive test automation framework for the booking system built with Play
 ```
 booking-playwright-ts/
 ├── src/
-│   ├── pages/           # Page Object Models
-│   │   └── HomePage.ts
-│   ├── fixtures/        # Custom test fixtures
-│   │   └── testFixtures.ts
-│   └── utils/           # Utility functions
-│       ├── testData.ts
-│       └── helpers.ts
-├── tests/               # Test specifications
-│   └── example.spec.ts
-├── .github/workflows/   # CI/CD pipelines
-│   └── playwright.yml
-├── playwright.config.ts # Playwright configuration
+│   ├── pages/                    # Page Object Models
+│   │   ├── HomePage.ts          # Main booking page interactions
+│   │   ├── CheckoutPage.ts      # Checkout and payment page
+│   │   └── BookingSummaryPage.ts # Booking confirmation page
+│   ├── fixtures/                 # Custom test fixtures
+│   │   └── testFixtures.ts      # Test setup and page objects
+│   └── utils/                    # Utility functions
+│       ├── DateGenerator.ts     # Date calculation utilities
+│       └── testData.json        # Test data configuration
+├── tests/                        # Test specifications
+│   ├── booking.spec.ts          # Desktop booking tests
+│   └── mobile-booking.spec.ts   # Mobile booking tests
+├── .github/workflows/            # CI/CD pipelines
+│   └── playwright-tests.yml     # GitHub Actions workflow
+├── playwright.config.ts          # Playwright configuration
 ├── package.json
 └── tsconfig.json
 ```
@@ -61,10 +64,10 @@ booking-playwright-ts/
 
 ## 🧪 Running Tests
 
-### Basic Commands
+### Quick Start Commands
 
 ```bash
-# Run all tests
+# Run all tests (desktop + mobile)
 npm test
 
 # Run tests in headed mode (see browser)
@@ -80,53 +83,54 @@ npm run test:ui
 npm run test:report
 ```
 
-### Browser-Specific Tests
-
-```bash
-# Run on specific browser
-npm run test:chrome
-npm run test:firefox
-npm run test:safari
-
-# Run all browsers
-npm run test:all
-```
-
 ### Device-Specific Tests
 
 ```bash
-# Run mobile tests only
+# Run desktop tests only (Chrome)
+npm run test:desktop
+
+# Run mobile tests only (Mobile Chrome)
 npm run test:mobile
 
-# Run desktop tests only
-npm run test:desktop
+# Run desktop tests (same as test:desktop)
+npm run test:chrome
+```
+
+### CI/CD Commands
+
+```bash
+# For continuous integration
+npm run test:ci:desktop  # Desktop tests with reporting
+npm run test:ci:mobile   # Mobile tests with reporting
 ```
 
 ## 📱 Supported Devices & Browsers
 
-### Desktop Browsers
-- **Chrome** (Chromium)
-- **Firefox**
-- **Safari** (WebKit)
+### Desktop Testing
+- **Chrome** (Chromium) - 1920x1080 resolution
 
-### Mobile Browsers
-- **Mobile Chrome** (Pixel 5)
-- **Mobile Safari** (iPhone 12)
-
-### Tablets
-- **iPad Pro**
+### Mobile Testing  
+- **Mobile Chrome** (Pixel 5) - 393x851 resolution
 
 ## 🎯 Test Scenarios
 
-The framework includes comprehensive test scenarios for:
+The framework includes comprehensive end-to-end booking scenarios:
 
-- ✅ **Page Element Verification** - Validate all booking page elements
-- ✅ **Date Selection** - Select future check-in and check-out dates
-- ✅ **Guest Selection** - Configure number of guests
-- ✅ **Promo Code Entry** - Test promotional code functionality
-- ✅ **Search Functionality** - Complete booking search flow
-- ✅ **Cart Management** - Verify cart state and functionality
-- ✅ **Multi-Device Testing** - Cross-platform compatibility
+### Desktop Tests (`booking.spec.ts`)
+- ✅ **Complete Booking Flow** - Full desktop booking journey
+- ✅ **Date Selection** - Calendar interaction and date picking
+- ✅ **Room Selection** - Room type and package selection
+- ✅ **Cart Management** - Add to cart and checkout flow
+- ✅ **Guest Details** - Form filling and validation
+- ✅ **Payment Processing** - Credit card payment flow
+- ✅ **Booking Confirmation** - Success verification
+
+### Mobile Tests (`mobile-booking.spec.ts`)
+- ✅ **Mobile Booking Flow** - Touch-optimized booking journey
+- ✅ **Mobile Date Selection** - Touch calendar with Done button
+- ✅ **Mobile Form Interaction** - Touch-friendly form filling
+- ✅ **Mobile Payment** - Mobile-optimized payment flow
+- ✅ **Responsive Design** - Mobile viewport validation
 
 ## 🔧 Configuration
 
@@ -134,42 +138,68 @@ The framework includes comprehensive test scenarios for:
 
 The `playwright.config.ts` file includes:
 
-- **Multi-browser setup** (Chrome, Firefox, Safari)
-- **Mobile device emulation**
+- **Desktop Chrome** - 1920x1080 resolution
+- **Mobile Chrome** - Pixel 5 device emulation (393x851)
 - **Parallel test execution**
-- **Automatic retry on failure**
+- **Automatic retry on failure** (2 retries on CI)
 - **Screenshot and video capture on failure**
 - **HTML and JSON reporting**
 
 ### Test Data Management
 
-Test data is centralized in `src/utils/testData.ts`:
+Test data is centralized in `src/utils/testData.json`:
 
-```typescript
-// Example test data configurations
-TestData.defaultSearch      // Standard booking
-TestData.weekendSearch      // Weekend booking
-TestData.familySearch       // Family booking with children
-TestData.businessSearch     // Business trip with promo code
-TestData.extendedStaySearch // Extended stay booking
+```json
+{
+  "deluxeKing": {
+    "roomItemId": "room-item-123",
+    "name": "Deluxe King Room"
+  },
+  "bedAndBreakfast": {
+    "name": "Bed & Breakfast Package"
+  },
+  "guestDetails": {
+    "firstName": "John",
+    "lastName": "Doe",
+    "email": "john.doe@example.com",
+    "mobile": "+1234567890",
+    "address": "123 Main St, City, State"
+  },
+  "cardDetails": {
+    "nameOnCard": "John Doe",
+    "cardNumber": "4111111111111111",
+    "expiryDate": "12/25",
+    "cvc": "123"
+  }
+}
 ```
 
 ## 🚀 CI/CD Integration
 
 ### GitHub Actions
 
-The framework includes a comprehensive GitHub Actions workflow (`.github/workflows/playwright.yml`) that:
+The framework includes a GitHub Actions workflow (`.github/workflows/playwright-tests.yml`) that:
 
-- **Runs on multiple browsers** (Chrome, Firefox, Safari)
-- **Tests mobile devices** (Mobile Chrome, Mobile Safari)
-- **Parallel execution** for faster feedback
-- **Artifact upload** for test reports and screenshots
-- **Automatic retry** on transient failures
+- **Desktop Tests Job** - Runs desktop tests on Chrome only
+- **Mobile Tests Job** - Runs mobile tests on Mobile Chrome only
+- **Parallel execution** - Both jobs run simultaneously for faster feedback
+- **Artifact upload** - Test results saved for 30 days
+- **Automatic retry** - 2 retries on CI for flaky tests
 
 ### Workflow Triggers
 
 - Push to `main` or `develop` branches
 - Pull requests to `main` branch
+
+### CI/CD Commands
+
+```bash
+# Run desktop tests in CI
+npm run test:ci:desktop
+
+# Run mobile tests in CI  
+npm run test:ci:mobile
+```
 
 ## 📊 Reporting
 
@@ -217,30 +247,60 @@ npx playwright show-trace trace.zip
 
 ## 📝 Writing Tests
 
-### Basic Test Structure
+### Desktop Test Example
 
 ```typescript
+// tests/booking.spec.ts
 import { test, expect } from '../src/fixtures/testFixtures';
-import { TestData } from '../src/utils/testData';
 
-test.describe('Booking System Tests', () => {
+test.describe('E2E Flow', () => {
   test.beforeEach(async ({ homePage }) => {
     await homePage.navigateToHomePage();
   });
 
-  test('should perform booking search @desktop', async ({ homePage }) => {
-    const searchData = TestData.defaultSearch;
+  test('should navigate to home page and select booking dates @desktop @chrome', async ({ 
+    homePage, checkoutPage, bookingSummaryPage, testData 
+  }) => {
+    await expect(homePage.calendarIcon).toBeVisible();
+    await homePage.clickCalendarIcon();
+    await homePage.performBookingSearch();
     
-    await homePage.performSearch(
-      searchData.dates.checkInDays,
-      searchData.dates.checkOutDaysAfterCheckIn,
-      searchData.guests.total
-    );
-    
-    // Add assertions here
+    // Complete booking flow...
   });
 });
 ```
+
+### Mobile Test Example
+
+```typescript
+// tests/mobile-booking.spec.ts
+import { test, expect } from '../src/fixtures/testFixtures';
+
+test.describe('E2E Flow', () => {
+  test.beforeEach(async ({ homePage }) => {
+    await homePage.navigateToHomePage();
+  });
+
+  test('should navigate to home page and select booking dates @mobile', async ({ 
+    homePage, checkoutPage, bookingSummaryPage, testData 
+  }) => {
+    await expect(homePage.calendarIcon).toBeVisible();
+    await homePage.clickCalendarIcon();
+    await homePage.performBookingSearchMobile(); // Mobile-specific method
+    
+    // Complete mobile booking flow...
+  });
+});
+```
+
+### Key Differences Between Desktop and Mobile Tests
+
+| Feature | Desktop | Mobile |
+|---------|---------|--------|
+| **Date Selection** | `performBookingSearch()` | `performBookingSearchMobile()` |
+| **Calendar Interaction** | `click()` | `tap()` + Done button |
+| **Text Matching** | Exact case | Case-insensitive regex |
+| **Viewport** | 1920x1080 | 393x851 (Pixel 5) |
 
 ## 🤝 Contributing
 
