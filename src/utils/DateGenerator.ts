@@ -25,27 +25,35 @@ export class DateGenerator {
   }
 
   /**
-   * Get tomorrow's date formatted for aria-label
+   * Get next month's check-in date formatted for aria-label (approximately 30 days from today)
+   */
+  static getNextMonthCheckInAriaLabel(): string {
+    const nextMonth = this.getFutureDate(30);
+    return this.formatDateForAriaLabel(nextMonth);
+  }
+
+  /**
+   * @deprecated Use getNextMonthCheckInAriaLabel() instead
+   * Get tomorrow's date formatted for aria-label (now returns next month for better test stability)
    */
   static getTomorrowAriaLabel(): string {
-    const tomorrow = this.getFutureDate(1);
-    return this.formatDateForAriaLabel(tomorrow);
+    return this.getNextMonthCheckInAriaLabel();
   }
 
   /**
    * Get check-out date (7 days after check-in) formatted for aria-label
    */
   static getCheckOutAriaLabel(): string {
-    const checkOutDate = this.getFutureDate(8); // 1 day (check-in) + 7 days (duration)
+    const checkOutDate = this.getFutureDate(37); // 30 days (check-in) + 7 days (duration)
     return this.formatDateForAriaLabel(checkOutDate);
   }
 
   /**
-   * Get date range for booking
+   * Get date range for booking (next month)
    */
   static getBookingDateRange(): { checkIn: Date; checkOut: Date; checkInLabel: string; checkOutLabel: string } {
-    const checkIn = this.getFutureDate(1);
-    const checkOut = this.getFutureDate(8);
+    const checkIn = this.getFutureDate(30); // Next month (approximately 30 days)
+    const checkOut = this.getFutureDate(37); // 7 days after check-in
     
     return {
       checkIn,

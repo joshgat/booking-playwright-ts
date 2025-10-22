@@ -31,17 +31,17 @@ export class HomePage {
   }
 
   /**
-   * Select a future date (1 day ahead) for check-in
+   * Select a future date (next month) for check-in
    */
   async selectFutureCheckInDate(): Promise<void> {
     // Wait for calendar to be visible
     await this.page.waitForSelector('.mbsc-datepicker', { timeout: 10000 });
     
-    // Get tomorrow's date label using DateGenerator
-    const tomorrowLabel = DateGenerator.getTomorrowAriaLabel();
+    // Get next month's date label using DateGenerator
+    const nextMonthLabel = DateGenerator.getNextMonthCheckInAriaLabel();
     
-    // Click on tomorrow's date using dynamic aria-label
-    await this.page.locator(`[aria-label*="${tomorrowLabel}"]`).click();
+    // Click on next month's date using dynamic aria-label
+    await this.page.locator(`[aria-label*="${nextMonthLabel}"]`).click();
   }
 
   /**
