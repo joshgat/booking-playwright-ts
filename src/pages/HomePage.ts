@@ -72,6 +72,24 @@ export class HomePage {
   }
 
   /**
+   * Complete date selection flow for mobile (includes Done button)
+   */
+  async selectBookingDatesMobile(): Promise<void> {
+    await this.selectFutureCheckInDate();
+    await this.page.waitForTimeout(1000);
+    await this.selectCheckOutDate();
+    await this.clickDoneButton();
+  }
+
+  /**
+   * Click the Done button that appears after date selection on mobile
+   */
+  async clickDoneButton(): Promise<void> {
+    const doneButton = this.page.locator('button.mbsc-popup-button-bottom').filter({ hasText: 'Done' });
+    await doneButton.click();
+  }
+
+  /**
    * Select a specific room type
    */
   async selectRoomType(roomName: string): Promise<void> {
@@ -83,6 +101,14 @@ export class HomePage {
    */
   async performBookingSearch(): Promise<void> {
     await this.selectBookingDates();
+    await this.clickSearchButton();
+  }
+
+  /**
+   * Complete booking flow for mobile: select dates (with Done button) and search
+   */
+  async performBookingSearchMobile(): Promise<void> {
+    await this.selectBookingDatesMobile();
     await this.clickSearchButton();
   }
 

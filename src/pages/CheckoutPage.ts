@@ -20,7 +20,7 @@ export class CheckoutPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.completeReservationText = page.getByText('Complete your reservation', { exact: true });
+    this.completeReservationText = page.locator('text=/Complete your [Rr]eservation/');
     this.titleField = page.getByTestId('booking-summary-form-title').locator('input');
     this.firstNameField = page.getByTestId('booking-summary-form-first-name').locator('input');
     this.lastNameField = page.getByTestId('booking-summary-form-last-name').locator('input');

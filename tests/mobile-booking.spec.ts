@@ -17,10 +17,10 @@ test.describe('E2E Flow', () => {
    * @param bookingSummaryPage - Booking summary page for confirmation verification
    * @param testData - Test data containing guest and payment information
    */
-  test('should navigate to home page and select booking dates @desktop', async ({ homePage, checkoutPage, bookingSummaryPage, testData }) => {
+  test('should navigate to home page and select booking dates @mobile', async ({ homePage, checkoutPage, bookingSummaryPage, testData }) => {
     await expect(homePage.calendarIcon).toBeVisible();
     await homePage.clickCalendarIcon();
-    await homePage.performBookingSearch();
+    await homePage.performBookingSearchMobile();
     
     await expect(homePage.page.getByText('Available', { exact: true })).toBeVisible();
     
@@ -29,40 +29,6 @@ test.describe('E2E Flow', () => {
     
     await expect(homePage.page.getByTestId('cartContentComponent')).toBeVisible();
     await homePage.page.getByTestId('btnCheckoutOnCart').click();
-    
-    await expect(checkoutPage.completeReservationText).toBeVisible();
-    await checkoutPage.page.waitForTimeout(5000);
-    
-    await checkoutPage.fillGuestDetails(testData.guestDetails);
-    await checkoutPage.fillAddressAndSelect(testData.guestDetails.address);
-    
-    await expect(checkoutPage.getPayDepositButton()).toBeEnabled();
-    await checkoutPage.clickPayDepositButton();
-    
-    await expect(checkoutPage.getPaymentContainer()).toBeVisible({ timeout: 10000 });
-    await checkoutPage.fillPaymentForm(testData.cardDetails);
-    await checkoutPage.clickPayButton();
-    
-    await expect(bookingSummaryPage.getBookingSuccessfulText()).toBeVisible({ timeout: 15000 });
-  });
-
-  /**
-   * Mobile-specific booking test
-   * This test will only run on the Mobile Chrome project
-   */
-  test('should complete booking flow on mobile @mobile', async ({ homePage, checkoutPage, bookingSummaryPage, testData }) => {
-    // Mobile-specific interactions using touch events
-    await expect(homePage.calendarIcon).toBeVisible();
-    await homePage.calendarIcon.tap(); // Use tap() instead of click() for mobile
-    await homePage.performBookingSearch();
-    
-    await expect(homePage.page.getByText('Available', { exact: true })).toBeVisible();
-    
-    await homePage.clickSeePricesButton(testData.deluxeKing.roomItemId);
-    await homePage.addBedAndBreakfastToCart(testData.deluxeKing.roomItemId, testData.bedAndBreakfast.name);
-    
-    await expect(homePage.page.getByTestId('cartContentComponent')).toBeVisible();
-    await homePage.page.getByTestId('btnCheckoutOnCart').tap(); // Use tap() for mobile
     
     await expect(checkoutPage.completeReservationText).toBeVisible();
     await checkoutPage.page.waitForTimeout(5000);
